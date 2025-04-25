@@ -17,12 +17,12 @@ app.use(express.json());
 mongoose.connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true
-}).then(() => console.log("✅ MongoDB connected"))
-  .catch(err => console.error("❌ MongoDB connection error:", err));
+}).then(() => console.log("MongoDB connected"))
+  .catch(err => console.error("MongoDB connection error:", err));
 
 // Root test route
 app.get('/', (req, res) => {
-    res.send('MelodyNest API is running 🎵');
+    res.send('MelodyNest API is running');
 });
 
 // 👇 This route creates and fetches a test user, song, and playlist
@@ -30,15 +30,15 @@ app.get('/test-all', async (req, res) => {
     try {
         // Create test user
         const testUser = new User({
-            username: 'melodytester',
-            email: 'melody@test.com',
+            username: 'melodytester2',
+            email: 'melody@tests.com',
             password: 'hashedpassword123' // just a placeholder for now
         });
         await testUser.save();
 
         // Create test song
         const testSong = new Song({
-            title: 'Dreamland Echoes',
+            title: 'Dreamland Echoess',
             artist: 'Echofox',
             genre: 'Chillwave',
             duration: 230,
@@ -49,7 +49,7 @@ app.get('/test-all', async (req, res) => {
 
         // Create test playlist
         const testPlaylist = new Playlist({
-            title: 'Vibe Zone',
+            title: 'Vibe Zones',
             description: 'Chill tunes to lose your mind to',
             songs: [testSong._id],
             owner: testUser._id,
@@ -58,19 +58,19 @@ app.get('/test-all', async (req, res) => {
         await testPlaylist.save();
 
         res.json({
-            message: "✅ Test data created",
+            message: "Test data created",
             user: testUser,
             song: testSong,
             playlist: testPlaylist
         });
 
     } catch (err) {
-        console.error("❌ Error in /test-all:", err);
+        console.error("Error in /test-all:", err);
         res.status(500).json({ error: err.message });
     }
 });
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-    console.log(`🚀 Server running on port ${PORT}`);
+    console.log(`Server running on port ${PORT}`);
 });
