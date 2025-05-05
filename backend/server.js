@@ -1,28 +1,68 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 const cors = require('cors');
 require('dotenv').config();
 
-// Import models
+
+// Import de los modelos a medida q se crean
 const User = require('./models/User');
 const Song = require('./models/Song');
 const Playlist = require('./models/Playlist');
 
-// Initialize express app
+// Inicializacion de express y cors
 const app = express();
-app.use(cors());
+app.use(cors({
+    origin: 'http://localhost:4200', // Frontend dev server
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true // If you're dealing with cookies/auth
+  }));
 app.use(express.json());
 
-// Connect to MongoDB
+// Conexion a MongoDB
 mongoose.connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true
-}).then(() => console.log("MongoDB connected"))
-  .catch(err => console.error("MongoDB connection error:", err));
+}).then(() => console.log("MongoDB conectado"))
+  .catch(err => console.error("Error en la conexión con Mongo:", err));
 
 // Root test route
 app.get('/', (req, res) => {
-    res.send('MelodyNest API is running');
+    res.send('Node.js está funcionando');	
+});
+
+//Crear Usuario
+app.post('/api/users', async (req, res) => {
+    try {
+        const { username, email, password } = req.body;
+
+        if (!username || !email || !password) {
+            return res.status(400).json({ message: 'Se han de llenar todos los campos.' });
+        }
+
+        // Check if email or username already exists
+        const existingEmail = await User.findOne({ email });
+        if (existingEmail) {
+            return res.status(409).json({ message: 'El correo ya está en uso.' });
+        }
+
+        const existingUsername = await User.findOne({ username });
+        if (existingUsername) {
+            return res.status(409).json({ message: 'El nombre de usuario ya está en uso.' });
+        }
+
+        // Hasheando la contraseña
+        const saltRounds = 10;
+        const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+        const newUser = new User({ username, email, password: hashedPassword });
+        await newUser.save();
+
+        res.status(201).json({ message: 'Usuario creado con éxito.', user: newUser });
+    } catch (err) {
+        console.error("Error creating user:", err);
+        res.status(500).json({ message: 'Error interno de servidor.' });
+    }
 });
 
 // 👇 This route creates and fetches a test user, song, and playlist

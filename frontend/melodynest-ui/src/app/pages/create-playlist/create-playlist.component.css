@@ -1,0 +1,112 @@
+.create-playlist-wrapper {
+    background-color: #121212;
+    color: white;
+    padding: 2rem;
+    max-width: 800px;
+    margin: 0 auto;
+    font-family: 'Helvetica Neue', sans-serif;
+  }
+  
+  .header h1 {
+    color: #1db954;
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .playlist-form label {
+    display: block;
+    margin-top: 1rem;
+    font-weight: 600;
+  }
+  
+  .playlist-form input,
+  .playlist-form textarea {
+    width: 100%;
+    padding: 0.75rem;
+    margin-top: 0.25rem;
+    border-radius: 6px;
+    border: none;
+    background-color: #1e1e1e;
+    color: white;
+    font-size: 1rem;
+  }
+  
+  .public-toggle {
+    margin-top: 1rem;
+  }
+  
+  .search-section {
+    margin-top: 2rem;
+  }
+  
+  .search-section input {
+    width: 100%;
+    padding: 0.75rem;
+    margin-top: 0.5rem;
+    background-color: #1e1e1e;
+    border: none;
+    border-radius: 6px;
+    color: white;
+  }
+  
+  .search-results {
+    margin-top: 1rem;
+  }
+  
+  .song-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #1f1f1f;
+    padding: 0.75rem;
+    margin-bottom: 0.5rem;
+    border-radius: 6px;
+  }
+  
+  .song-card button,
+  .save-btn,
+  .preview-section button {
+    background-color: #1db954;
+    color: white;
+    border: none;
+    border-radius: 999px;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 0.9rem;
+  }
+  
+  .song-card button:hover,
+  .save-btn:hover,
+  .preview-section button:hover {
+    background-color: #1ed760;
+  }
+  
+  .preview-section ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .preview-section li {
+    background-color: #1e1e1e;
+    margin-bottom: 0.5rem;
+    padding: 0.5rem;
+    border-radius: 6px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .image-preview {
+    margin-top: 1rem;
+    text-align: center;
+  }
+  
+  .image-preview img {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 2px solid #1db954;
+  }
+  
+  

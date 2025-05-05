@@ -1,0 +1,24 @@
+<div class="signup-wrapper">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg" alt="Logo" class="logo" />
+  
+    <h2>Crea una cuenta para <br>empezar a escuchar!</h2>
+  
+    <form (ngSubmit)="createUser()" #userForm="ngForm" class="signup-form">
+      <label for="username">Usuario</label>
+      <input type="text" id="username" [(ngModel)]="username" name="username" required />
+  
+      <label for="email">Dirección de correo</label>
+      <input type="email" id="email" [(ngModel)]="email" name="email" required />
+  
+      <label for="password">Contraseña</label>
+      <input type="password" id="password" [(ngModel)]="password" name="password" required />
+  
+      <button type="submit">Continuar</button>
+    </form>
+  
+    <p *ngIf="successMessage" class="success">{{ successMessage }}</p>
+    <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
+  
+    <p class="login-link">Ya tienes una cuenta? <a href="login">Inicia sesión aquí.</a></p>
+</div>
+  

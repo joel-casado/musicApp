@@ -1,1 +1,9 @@
-/* You can add global styles to this file, and also import other style files */
+/* Estilos Globales */
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #121212;
+    font-family: 'Manrope', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    color: #fff;
+  }
+  

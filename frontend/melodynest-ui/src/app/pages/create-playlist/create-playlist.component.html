@@ -1,0 +1,66 @@
+<div class="create-playlist-wrapper">
+    <div class="header">
+      <h1>Create a New Playlist</h1>
+      <p>Give your playlist a name and description. You can add songs below.</p>
+    </div>
+  
+    <form class="playlist-form">
+      <label for="title">Playlist Title</label>
+      <input type="text" id="title" [(ngModel)]="title" name="title" required />
+  
+      <label for="description">Description</label>
+      <textarea id="description" [(ngModel)]="description" name="description"></textarea>
+
+      <label for="image">Cover Image URL</label>
+        <input
+        type="text"
+        id="image"
+        [(ngModel)]="image"
+        name="image"
+        placeholder="https://example.com/image.jpg"
+        />
+
+        <!-- Preview the image -->
+        <div class="image-preview" *ngIf="image">
+        <img [src]="image" alt="Playlist cover image" />
+        </div>
+
+  
+      <div class="public-toggle">
+        <label>
+          <input type="checkbox" [(ngModel)]="isPublic" name="isPublic" />
+          Make playlist public
+        </label>
+      </div>
+    </form>
+  
+    <div class="search-section">
+      <h2>Search Songs</h2>
+      <input
+        type="text"
+        [(ngModel)]="searchQuery"
+        name="searchQuery"
+        placeholder="Search for a song..."
+      />
+      <!-- Placeholder song list for now -->
+      <div class="search-results">
+        <div class="song-card" *ngFor="let song of dummySongs">
+          <span>{{ song.title }} — {{ song.artist }}</span>
+          <button (click)="addSong(song)">Add</button>
+        </div>
+      </div>
+    </div>
+  
+    <div class="preview-section">
+      <h2>Playlist Preview</h2>
+      <ul>
+        <li *ngFor="let song of selectedSongs">
+          {{ song.title }} — {{ song.artist }}
+          <button (click)="removeSong(song)">Remove</button>
+        </li>
+      </ul>
+    </div>
+  
+    <button class="save-btn">Create Playlist</button>
+  </div>
+  
