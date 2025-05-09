@@ -8,25 +8,8 @@ import { CommonModule } from '@angular/common';
   selector: 'app-login',
   standalone: true,
   imports: [ CommonModule, ReactiveFormsModule ],
-  template: `
-    <form [formGroup]="form" (ngSubmit)="onSubmit()">
-      <label>Email</label>
-      <input formControlName="email" type="email" />
-      <div *ngIf="form.get('email')?.invalid && form.get('email')?.touched">
-        <small *ngIf="form.get('email')?.errors?.['required']">Requerido.</small>
-        <small *ngIf="form.get('email')?.errors?.['email']">Email inválido.</small>
-      </div>
-
-      <label>Contraseña</label>
-      <input formControlName="password" type="password" />
-      <div *ngIf="form.get('password')?.invalid && form.get('password')?.touched">
-        <small>Requerido.</small>
-      </div>
-
-      <button type="submit">Entrar</button>
-    </form>
-    <div *ngIf="error" class="error">{{ error }}</div>
-  `
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
   form!: FormGroup;        // 1) Declaras el campo
