@@ -16,10 +16,10 @@ export const Routes: Route[] = [
   { path: 'dashboard', component: DashboardComponent },
 
   { path: 'create-user', component: CreateUserComponent },
-  
+
   { path: 'playlist/new', component: CreatePlaylistComponent },
   // ✅ Wildcard last: unknown routes go to login
   { path: '**', redirectTo: 'login' },
-  
+
 
 ];
