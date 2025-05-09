@@ -8,7 +8,7 @@ import { CreateUserComponent } from './create-user/create-user.component';
 
 export const Routes: Route[] = [
   // ✅ Default route: root goes to create-user
-  { path: '', redirectTo: 'create-user', pathMatch: 'full' },
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
 
   { path: 'login', component: LoginComponent },
 
