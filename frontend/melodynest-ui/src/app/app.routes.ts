@@ -5,6 +5,7 @@ import { DashboardComponent }        from './dashboard/dashboard.component';
 import { CreatePlaylistComponent }   from './pages/create-playlist/create-playlist.component';
 import { authGuard }                 from './auth/auth.guard';
 import { CreateUserComponent }       from './create-user/create-user.component';
+import { CreateSongComponent }       from './pages/create-song/create-song.component';
 
 export const Routes: Route[] = [
   // raíz a login
@@ -17,7 +18,9 @@ export const Routes: Route[] = [
   // rutas protegidas
   { path: 'dashboard',     component: DashboardComponent,     canActivate: [ authGuard ] },
   { path: 'playlist/new',  component: CreatePlaylistComponent, canActivate: [ authGuard ] },
-  
+  // crear cancion
+  { path: 'song/new', component: CreateSongComponent },
+
 
   // wildcard al login
   { path: '**', redirectTo: 'login' },

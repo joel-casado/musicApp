@@ -1,0 +1,61 @@
+/* Contenedor general */
+.create-song-wrapper {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 1rem;
+  background: #1e1e1e;
+  border-radius: 12px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+  color: #fff;
+}
+
+/* Cabecera */
+.create-song-wrapper .header h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  color: #1db954;
+}
+.create-song-wrapper .header p {
+  margin-bottom: 1.5rem;
+  opacity: 0.8;
+}
+
+/* Formulario */
+.song-form .field {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+}
+.song-form .field label {
+  font-weight: bold;
+  margin-bottom: 0.25rem;
+}
+.song-form .field input {
+  padding: 0.75rem 1rem;
+  background: #2a2a2a;
+  border: 1px solid #444;
+  border-radius: 4px;
+  color: #fff;
+  font-size: 1rem;
+}
+.song-form .field input::placeholder {
+  color: #666;
+}
+
+/* Botón grande */
+.save-btn {
+  display: block;
+  width: 100%;
+  padding: 1rem;
+  margin-top: 1.5rem;
+  background: #1db954;
+  color: #000;
+  border: none;
+  border-radius: 4px;
+  font-size: 1.25rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+.save-btn:hover {
+  background: #1db954;
+}
