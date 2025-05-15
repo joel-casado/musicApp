@@ -5,6 +5,7 @@ const songSchema = new mongoose.Schema({
   genre:      String,
   duration:   Number,
   url:        String,
+  image:      String,
   uploadedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
 }, { timestamps: true });
 

@@ -2,19 +2,19 @@
 const express = require('express');
 const Song    = require('../models/Song');
 const router  = express.Router();
+
 router.use((req, res, next) => {
-  console.log('[songs.js]', req.method, req.url);
+  console.log('[songs.js]', req.method, req.url, req.body);
   next();
 });
 
-
 // POST /api/songs  → Crear una canción nueva
 router.post('/', async (req, res) => {
+  console.log('BODY:', req.body); 
   try {
-    const { title, artist, genre, duration, url } = req.body;
-    // validaciones mínimas
+    const { title, artist, genre, duration, url, image } = req.body;
     if (!title || !artist || !url) {
-      return res.status(400).json({ message: 'Título, artista y URL requeridos' });
+      return res.status(400).json({ message: 'Título, artista y URL son obligatorios' });
     }
     const newSong = await Song.create({
       title,
@@ -22,7 +22,7 @@ router.post('/', async (req, res) => {
       genre,
       duration,
       url,
-      image
+      image        // ahora guardas la URL aquí
     });
     res.status(201).json(newSong);
   } catch (err) {
@@ -31,7 +31,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-// GET /api/songs → Listar todas las canciones (opcional)
+// GET /api/songs → Listar todas las canciones
 router.get('/', async (req, res) => {
   try {
     const songs = await Song.find();

@@ -3,12 +3,13 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface Song {
-  _id?: string;
-  title: string;
-  artist: string;
-  genre: string;
-  duration: number;
-  url: string;
+  _id?:    string;
+  title:   string;
+  artist:  string;
+  genre:   string;
+  duration:number;
+  url:     string;
+  image?:  string;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -18,6 +19,7 @@ export class SongsService {
   constructor(private http: HttpClient) {}
 
   create(song: Song): Observable<Song> {
+    // enviamos un JSON convencional
     return this.http.post<Song>(this.apiUrl, song);
   }
 

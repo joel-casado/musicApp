@@ -18,12 +18,14 @@ export class CreateSongComponent {
   genre    = '';
   duration = 0;
   url      = '';
+  image     = '';
   error    = '';
 
   constructor(
     private songsService: SongsService,
     private router: Router
   ) {}
+
 
   onSubmit() {
     // chequeos mínimos
@@ -33,17 +35,18 @@ export class CreateSongComponent {
     }
 
     const newSong: Song = {
-      title: this.title,
-      artist: this.artist,
-      genre: this.genre,
+      title:    this.title,
+      artist:   this.artist,
+      genre:    this.genre,
       duration: this.duration,
-      url: this.url
+      url:      this.url,
+      image:    this.image    // incluimos aquí la URL de la imagen
     };
+
 
     this.songsService.create(newSong).subscribe({
       next: song => {
-        console.log('Canción creada', song);
-        // redirige al dashboard o limpia el form:
+        console.log('Canción creada:', song);
         this.router.navigate(['/dashboard']);
       },
       error: err => {

@@ -10,7 +10,8 @@ const jwt      = require('jsonwebtoken');
 const User     = require('./models/User');
 const Song     = require('./models/Song');
 const Playlist = require('./models/Playlist');
-const app = express();
+const app      = express();
+const path     = require('path');
 
 
 // 1) Middleware
@@ -27,6 +28,8 @@ app.use((req, res, next) => {
   console.log(`${req.method} ${req.url}`);
   next();
 });
+
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // 3) Montar rutas
 const authRoutes = require('./routes/auth');

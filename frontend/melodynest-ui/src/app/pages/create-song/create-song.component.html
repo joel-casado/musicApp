@@ -1,7 +1,7 @@
 <div class="create-song-wrapper">
   <div class="header">
     <h1>Añade nueva canción</h1>
-    <p>Llena los detalles</p>
+    <p>Rellena los campos</p>
   </div>
 
   <form class="song-form" (ngSubmit)="onSubmit()">
@@ -47,6 +47,14 @@
       name="url"
       [(ngModel)]="url"
       placeholder="https://example.com/track.mp3"
+    />
+    <label for="image">URL de la imagen</label>
+    <input
+      type="url"
+      id="image"
+      name="image"
+      [(ngModel)]="image"
+      placeholder="https://example.com/image.jpg"
     />
 
     <button type="submit" class="save-btn">Añadir Canción</button>
