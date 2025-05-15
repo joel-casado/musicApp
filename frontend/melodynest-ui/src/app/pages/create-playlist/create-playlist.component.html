@@ -1,6 +1,6 @@
 <div class="create-playlist-wrapper">
     <div class="header">
-      <h1>Crea una Nueva Playlist</h1>
+      <h1>Crea una nueva playlist</h1>
       <p>Dale un nombre y una descripción a tu playlist. Puedes añadir canciones más abajo.</p>
     </div>
   
@@ -40,13 +40,13 @@
         type="text"
         [(ngModel)]="searchQuery"
         name="searchQuery"
-        placeholder="Search for a song..."
+        placeholder="Busca una canción..."
       />
       <!-- Lista de canciones placeholde hasta q haya canciones -->
       <div class="search-results">
         <div class="song-card" *ngFor="let song of dummySongs">
           <span>{{ song.title }} — {{ song.artist }}</span>
-          <button (click)="addSong(song)">Add</button>
+          <button (click)="addSong(song)">Añadir</button>
         </div>
       </div>
     </div>
@@ -70,7 +70,7 @@
         <ul>
           <li *ngFor="let song of selectedSongs">
             {{ song.title }} — {{ song.artist }}
-            <button (click)="removeSong(song)">Remove</button>
+            <button (click)="removeSong(song)">Eliminar</button>
           </li>
         </ul>
       </div>

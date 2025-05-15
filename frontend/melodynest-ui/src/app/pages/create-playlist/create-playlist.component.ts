@@ -18,7 +18,7 @@ export class CreatePlaylistComponent {
 
   dummySongs = [
     { id: '1', title: 'Dreams', artist: 'Fleetwood Mac' },
-    { id: '2', title: 'bad guy', artist: 'Billie Eilish' },
+    { id: '2', title: 'Violet', artist: 'Hole' },
     { id: '3', title: 'Can’t Feel My Face', artist: 'The Weeknd' }
   ];
 

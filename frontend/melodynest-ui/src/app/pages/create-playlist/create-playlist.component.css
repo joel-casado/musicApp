@@ -31,7 +31,7 @@
 
 .playlist-form input[type="text"],
 .playlist-form textarea {
-  width: 100%;
+  width: 97.5%;
   padding: 12px;
   background-color: #282828;
   color: #fff;
@@ -83,7 +83,7 @@
 }
 
 .search-section input[type="text"] {
-  width: 100%;
+  width: 97.5%;
   padding: 10px;
   background-color: #282828;
   color: #fff;
