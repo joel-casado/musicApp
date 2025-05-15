@@ -10,11 +10,8 @@ const jwt      = require('jsonwebtoken');
 const User     = require('./models/User');
 const Song     = require('./models/Song');
 const Playlist = require('./models/Playlist');
-
-// Importar rutas de auth
-const authRoutes = require('./routes/auth');
-
 const app = express();
+
 
 // 1) Middleware
 app.use(cors({
@@ -22,6 +19,8 @@ app.use(cors({
   credentials: true
 }));
 app.use(express.json());
+const songsRoutes = require('./routes/songs');
+app.use('/api/songs', songsRoutes);
 
 // 2) Logger simple (opcional, pero muy útil para debug)
 app.use((req, res, next) => {
@@ -30,6 +29,7 @@ app.use((req, res, next) => {
 });
 
 // 3) Montar rutas
+const authRoutes = require('./routes/auth');
 app.use('/api/auth', authRoutes);
 
 // 4) Rutas extra (test, crear usuario, etc)
