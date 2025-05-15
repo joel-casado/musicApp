@@ -21,7 +21,8 @@ router.post('/', async (req, res) => {
       artist,
       genre,
       duration,
-      url
+      url,
+      image
     });
     res.status(201).json(newSong);
   } catch (err) {
