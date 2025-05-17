@@ -12,6 +12,7 @@ const Song     = require('./models/Song');
 const Playlist = require('./models/Playlist');
 const app      = express();
 const path     = require('path');
+const songsRoutes = require('./routes/songs');
 
 
 // 1) Middleware
@@ -20,7 +21,6 @@ app.use(cors({
   credentials: true
 }));
 app.use(express.json());
-const songsRoutes = require('./routes/songs');
 app.use('/api/songs', songsRoutes);
 
 // 2) Logger simple (opcional, pero muy útil para debug)

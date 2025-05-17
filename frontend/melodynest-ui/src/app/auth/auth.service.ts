@@ -10,6 +10,9 @@ interface LoginResponse {
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
+  isAuthenticated() {
+    throw new Error('Method not implemented.');
+  }
   private apiUrl = 'http://localhost:5000/api/auth';
 
   constructor(private http: HttpClient) {}
