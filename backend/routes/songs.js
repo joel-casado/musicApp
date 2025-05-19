@@ -1,5 +1,6 @@
 const express = require('express');
 const Song = require('../models/Song');
+const auth = require('../middleware/authMiddleware'); // Asegúrate de que esta ruta sea correcta
 const router = express.Router();
 
 // 🧪 Log de todas las peticiones
@@ -8,10 +9,10 @@ router.use((req, res, next) => {
   next();
 });
 
-// 🔄 GET /api/songs/user → Últimas 5 canciones del usuario fijo
-router.get('/user', async (req, res) => {
+// 🔄 GET /api/songs/user → Últimas 5 canciones del usuario autenticado
+router.get('/user', auth, async (req, res) => {
   try {
-    const userId = '6828d16165d027365213f979'; // ID del usuario fijo
+    const userId = req.user._id; // ✅ Usuario real desde el token
     const songs = await Song.find({ uploadedBy: userId })
       .sort({ createdAt: -1 })
       .limit(5);
@@ -24,7 +25,7 @@ router.get('/user', async (req, res) => {
 });
 
 // ➕ POST /api/songs → Crear canción nueva
-router.post('/', async (req, res) => {
+router.post('/', auth, async (req, res) => {
   try {
     const { title, artist, genre, duration, url, image } = req.body;
 
@@ -39,7 +40,7 @@ router.post('/', async (req, res) => {
       duration,
       url,
       image,
-      uploadedBy: '6828d16165d027365213f979' // Usuario fijo
+      uploadedBy: req.user._id // ✅ Se asocia al usuario autenticado
     });
 
     res.status(201).json(newSong);
