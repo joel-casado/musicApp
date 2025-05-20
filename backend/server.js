@@ -34,6 +34,9 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 // 3) Montar rutas
 const authRoutes = require('./routes/auth');
 app.use('/api/auth', authRoutes);
+// in backend/index.js or app.js
+app.use('/api/playlists', require('./routes/playlists'));
+
 
 // 4) Rutas extra (test, crear usuario, etc)
 app.get('/', (req, res) => res.send('Node.js está funcionando'));
