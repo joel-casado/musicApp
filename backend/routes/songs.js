@@ -2,6 +2,21 @@ const express = require('express');
 const Song = require('../models/Song');
 const auth = require('../middleware/authMiddleware'); // Asegúrate de que esta ruta sea correcta
 const router = express.Router();
+const multer = require('multer');
+const path = require('path');
+
+// Multer config
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, path.join(__dirname, '../public/music'));
+  },
+  filename: function (req, file, cb) {
+    // Ensure unique filename
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    cb(null, uniqueSuffix + '-' + file.originalname);
+  }
+});
+const upload = multer({ storage });
 
 // 🧪 Log de todas las peticiones
 router.use((req, res, next) => {
@@ -58,6 +73,30 @@ router.get('/', async (req, res) => {
   } catch (err) {
     console.error('Error listando canciones:', err);
     res.status(500).json({ message: 'Error interno al listar canciones' });
+  }
+});
+
+// POST /api/songs/upload - upload mp3 and create song
+router.post('/upload', auth, upload.single('audio'), async (req, res) => {
+  try {
+    const { title, artist, genre, duration, image } = req.body;
+    if (!req.file) {
+      return res.status(400).json({ message: 'Audio file is required' });
+    }
+    const url = `http://localhost:5000/music/${req.file.filename}`;
+    const newSong = await Song.create({
+      title,
+      artist,
+      genre,
+      duration,
+      url,
+      image,
+      uploadedBy: req.user._id
+    });
+    res.status(201).json(newSong);
+  } catch (err) {
+    console.error('Error uploading song:', err);
+    res.status(500).json({ message: 'Error uploading song' });
   }
 });
 

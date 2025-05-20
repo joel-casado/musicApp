@@ -63,3 +63,22 @@
 .song-form .save-btn:hover {
   background-color: #1aa34a;
 }
+
+/* Audio Dropzone */
+.audio-dropzone {
+  border: 2px dashed #1db954;
+  border-radius: 8px;
+  padding: 30px;
+  text-align: center;
+  color: #b3b3b3;
+  background: #181818;
+  cursor: pointer;
+  margin-bottom: 20px;
+  transition: border-color 0.2s;
+}
+
+.audio-dropzone.dragover {
+  border-color: #21e065;
+  background: #222;
+  color: #fff;
+}

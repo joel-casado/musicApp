@@ -31,23 +31,32 @@
       [(ngModel)]="genre"
     />
 
-    <label for="duration">Duración (segundos)</label>
-    <input
-      type="number"
-      id="duration"
-      name="duration"
-      [(ngModel)]="duration"
-      min="0"
-    />
+    <label for="audio">Archivo MP3</label>
+    <div
+      class="audio-dropzone"
+      (dragover)="onDragOver($event)"
+      (dragleave)="onDragLeave($event)"
+      (drop)="onDrop($event)"
+      [class.dragover]="isDragOver"
+      (click)="fileInput.click()"
+    >
+      <input
+        #fileInput
+        type="file"
+        id="audio"
+        name="audio"
+        accept=".mp3,audio/mp3"
+        (change)="onFileSelected($event)"
+        style="display: none"
+      />
+      <div *ngIf="!audioFile">
+        <span>Arrastra tu archivo MP3 aquí o haz click para seleccionar</span>
+      </div>
+      <div *ngIf="audioFile">
+        <span>Archivo seleccionado: {{ audioFile.name }}</span>
+      </div>
+    </div>
 
-    <label for="url">URL del Audio</label>
-    <input
-      type="url"
-      id="url"
-      name="url"
-      [(ngModel)]="url"
-      placeholder="https://example.com/track.mp3"
-    />
     <label for="image">URL de la imagen</label>
     <input
       type="url"

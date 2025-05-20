@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-// Update the path below to the correct relative path where songs.service.ts exists
-import { SongsService, Song } from '../../songs/songs.service';
 import { Router } from '@angular/router';
+import { SongsService } from '../../songs/songs.service';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   standalone: true,
@@ -18,37 +18,76 @@ export class CreateSongComponent {
   artist   = '';
   genre    = '';
   duration = 0;
-  url      = '';
-  image     = '';
+  image    = '';
+  audioFile: File | null = null;
   error    = '';
+  isDragOver = false;
 
   constructor(
-    private songsService: SongsService,
+    private http: HttpClient,
     private router: Router,
     private snackBar: MatSnackBar
   ) {}
 
+  onFileSelected(event: any) {
+    const file = event.target.files[0];
+    this.handleAudioFile(file);
+  }
+
+  onDragOver(event: DragEvent) {
+    event.preventDefault();
+    this.isDragOver = true;
+  }
+
+  onDragLeave(event: DragEvent) {
+    event.preventDefault();
+    this.isDragOver = false;
+  }
+
+  onDrop(event: DragEvent) {
+    event.preventDefault();
+    this.isDragOver = false;
+    if (event.dataTransfer && event.dataTransfer.files.length > 0) {
+      const file = event.dataTransfer.files[0];
+      this.handleAudioFile(file);
+    }
+  }
+
+  private handleAudioFile(file: File) {
+    if (file && (file.type === 'audio/mp3' || file.type === 'audio/mpeg')) {
+      this.audioFile = file;
+      this.error = '';
+      // Get duration
+      const audio = document.createElement('audio');
+      audio.preload = 'metadata';
+      audio.src = URL.createObjectURL(file);
+      audio.onloadedmetadata = () => {
+        window.URL.revokeObjectURL(audio.src);
+        this.duration = Math.floor(audio.duration);
+      };
+    } else {
+      this.error = 'Por favor selecciona un archivo MP3 válido.';
+      this.audioFile = null;
+      this.duration = 0;
+    }
+  }
 
   onSubmit() {
-    // chequeos mínimos
-    if (!this.title.trim() || !this.artist.trim() || !this.url.trim()) {
-      this.error = 'Title, artist y URL son obligatorios';
+    if (!this.title.trim() || !this.artist.trim() || !this.audioFile) {
+      this.error = 'Título, artista y archivo MP3 son obligatorios';
       return;
     }
 
-    const newSong: Song = {
-      title:    this.title,
-      artist:   this.artist,
-      genre:    this.genre,
-      duration: this.duration,
-      url:      this.url,
-      image:    this.image    // incluimos aquí la URL de la imagen
-    };
+    const formData = new FormData();
+    formData.append('title', this.title);
+    formData.append('artist', this.artist);
+    formData.append('genre', this.genre);
+    formData.append('duration', this.duration.toString());
+    formData.append('image', this.image);
+    formData.append('audio', this.audioFile);
 
-
-    this.songsService.create(newSong).subscribe({
-      next: song => {
-        console.log('Canción creada:', song);
+    this.http.post('http://localhost:5000/api/songs/upload', formData).subscribe({
+      next: () => {
         this.snackBar.open('Canción creada con éxito 🎵', 'Cerrar', {
           duration: 3000,
           panelClass: ['snackbar-success']
@@ -56,9 +95,8 @@ export class CreateSongComponent {
         this.router.navigate(['/dashboard']);
       },
       error: err => {
-        console.error(err);
         this.error = err.error?.message || 'No se pudo crear la canción';
-        this.snackBar.open('Error al crear la canción ❌', 'Cerrar',{
+        this.snackBar.open('Error al crear la canción ❌', 'Cerrar', {
           duration: 3000,
           panelClass: ['error-snackbar']
         });
