@@ -2,18 +2,13 @@ const express = require('express');
 const router = express.Router();
 const Playlist = require('../models/Playlist');
 const User = require('../models/User');
+const auth = require('../middleware/authMiddleware');
 
 // Create a new playlist
-router.post('/', async (req, res) => {
+router.post('/', auth, async (req, res) => {
   try {
     const { title, description, image, isPublic, songs } = req.body;
-
-    // Temporary fallback owner (replace this with auth user later)
-    const fallbackUser = await User.findOne(); // First user in DB
-
-    if (!fallbackUser) {
-      return res.status(500).json({ message: 'No user found to assign as playlist owner.' });
-    }
+    const userId = req.user._id; // <-- get user from token
 
     const newPlaylist = new Playlist({
       title,
@@ -21,7 +16,7 @@ router.post('/', async (req, res) => {
       image,
       isPublic,
       songs,
-      owner: fallbackUser._id,
+      owner: userId, // <-- assign owner
     });
 
     await newPlaylist.save();
@@ -39,6 +34,19 @@ router.get('/', async (req, res) => {
     res.json(playlists);
   } catch (err) {
     res.status(500).json({ message: 'Error fetching playlists', error: err.message });
+  }
+});
+
+// Get last 5 playlists for the authenticated user
+router.get('/user', auth, async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const playlists = await Playlist.find({ owner: userId })
+      .sort({ createdAt: -1 })
+      .limit(5);
+    res.json(playlists);
+  } catch (err) {
+    res.status(500).json({ message: 'Error fetching user playlists', error: err.message });
   }
 });
 

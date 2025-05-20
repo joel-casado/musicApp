@@ -16,6 +16,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class DashboardComponent implements OnInit {
   songs: any[] = [];
+  playlists: any[] = [];
 
   constructor(
     private auth: AuthService,
@@ -31,6 +32,16 @@ export class DashboardComponent implements OnInit {
       },
       error: err => {
         console.error('Error al cargar canciones', err);
+      }
+    });
+
+    // Load last 5 playlists
+    this.http.get('http://localhost:5000/api/playlists/user').subscribe({
+      next: (res: any) => {
+        this.playlists = res;
+      },
+      error: err => {
+        console.error('Error al cargar playlists', err);
       }
     });
   }

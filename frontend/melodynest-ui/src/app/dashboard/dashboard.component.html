@@ -21,9 +21,18 @@
       <section class="section">
         <h2>Made for You</h2>
         <div class="grid">
-          <div class="card" *ngFor="let i of [1,2,3,4,5]">
-            <div class="album-cover"></div>
-            <p>Playlist {{ i }}</p>
+          <div *ngIf="playlists.length === 0" class="card" style="text-align:center; color:#b3b3b3;">
+            No has creado ninguna playlist aún.
+          </div>
+          <div class="card" *ngFor="let playlist of playlists">
+            <div class="album-cover">
+              <img
+                *ngIf="playlist.image"
+                [src]="playlist.image"
+                [alt]="playlist.title"
+                style="width: 100%; height: 100%; object-fit: cover; border-radius: 4px;" />
+            </div>
+            <p>{{ playlist.title }}</p>
           </div>
         </div>
       </section>
@@ -31,8 +40,10 @@
       <section class="section">
         <h2>Recently Played</h2>
         <div class="grid">
+          <div *ngIf="songs.length === 0" class="card" style="text-align:center; color:#b3b3b3;">
+            No has añadido ninguna canción aún.
+          </div>
           <div class="card" *ngFor="let song of songs" (click)="openLink(song.url)">
-
             <div class="album-cover">
               <img
                 [src]="song.image"
