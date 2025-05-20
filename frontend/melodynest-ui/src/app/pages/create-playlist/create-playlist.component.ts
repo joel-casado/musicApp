@@ -2,7 +2,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PlaylistService } from '../../services/playlist.service';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-create-playlist',
@@ -45,7 +45,14 @@ export class CreatePlaylistComponent implements OnInit {
     this.selectedSongs = this.selectedSongs.filter(s => s._id !== song._id);
   }
 
-  async savePlaylist() {
+  savePlaylist(form: NgForm) {
+    if (form.invalid) {
+      Object.values(form.controls).forEach(control => {
+        control.markAsTouched();
+      });
+      return;
+    }
+
     try {
       const payload = {
         title: this.title,
@@ -55,7 +62,7 @@ export class CreatePlaylistComponent implements OnInit {
         songs: this.selectedSongs.map(s => s._id)
       };
 
-      await this.playlistService.createPlaylist(payload);
+      this.playlistService.createPlaylist(payload);
       alert('🎉 Playlist creada con éxito!');
       // Optionally, navigate or reset form
     } catch (error) {
@@ -75,7 +82,12 @@ export class CreatePlaylistComponent implements OnInit {
       );
     }
 
-    // Show only the 3 latest songs (assuming allSongs is sorted oldest->newest)
-    return filtered.slice(-3).reverse(); // newest first
+    // Exclude already selected songs
+    filtered = filtered.filter(song =>
+      !this.selectedSongs.some(sel => sel._id === song._id)
+    );
+
+    // Show only the 3 latest (newest first)
+    return filtered.slice(-3).reverse();
   }
 }

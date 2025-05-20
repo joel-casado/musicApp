@@ -4,21 +4,45 @@
       <p>Dale un nombre y una descripción a tu playlist. Puedes añadir canciones más abajo.</p>
     </div>
   
-    <form class="playlist-form">
+    <form class="playlist-form" #playlistForm="ngForm" (ngSubmit)="savePlaylist(playlistForm)">
       <label for="title">Título de la Playlist</label>
-      <input type="text" id="title" [(ngModel)]="title" name="title" required />
-  
+      <input
+        type="text"
+        id="title"
+        [(ngModel)]="title"
+        name="title"
+        required
+        #titleInput="ngModel"
+      />
+      <div *ngIf="titleInput.invalid && titleInput.touched" style="color: #ff4d4d; font-size: 13px;">
+        El título es obligatorio.
+      </div>
+
       <label for="description">Descripción</label>
-      <textarea id="description" [(ngModel)]="description" name="description"></textarea>
+      <textarea
+        id="description"
+        [(ngModel)]="description"
+        name="description"
+        required
+        #descInput="ngModel"
+      ></textarea>
+      <div *ngIf="descInput.invalid && descInput.touched" style="color: #ff4d4d; font-size: 13px;">
+        La descripción es obligatoria.
+      </div>
 
       <label for="image">Enlace de la Portada</label>
-        <input
+      <input
         type="text"
         id="image"
         [(ngModel)]="image"
         name="image"
+        required
+        #imageInput="ngModel"
         placeholder="https://example.com/image.jpg"
-        />
+      />
+      <div *ngIf="imageInput.invalid && imageInput.touched" style="color: #ff4d4d; font-size: 13px;">
+        La portada es obligatoria.
+      </div>
 
         <!-- Preview de la foto -->
         <div class="image-preview" *ngIf="image">
@@ -42,7 +66,7 @@
         name="searchQuery"
         placeholder="Busca una canción..."
       />
-      <!-- Lista de canciones placeholde hasta q haya canciones -->
+      <!-- Lista de canciones+filtros -->
       <div class="search-results">
         <div class="song-card" *ngFor="let song of filteredSongs">
           <span>{{ song.title }} — {{ song.artist }}</span>
@@ -77,5 +101,11 @@
     </div>
     
   
-    <button class="save-btn" (click)="savePlaylist()">Crear Playlist</button>
+    <button
+      class="save-btn"
+      [disabled]="playlistForm.invalid"
+      (click)="savePlaylist(playlistForm)"
+    >
+      Crear Playlist
+    </button>
   </div>
