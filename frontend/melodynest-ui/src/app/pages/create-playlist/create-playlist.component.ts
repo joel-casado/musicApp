@@ -63,4 +63,19 @@ export class CreatePlaylistComponent implements OnInit {
       alert('🚨 Error al crear la playlist');
     }
   }
+
+  get filteredSongs() {
+    let filtered = this.allSongs;
+
+    if (this.searchQuery.trim()) {
+      const query = this.searchQuery.trim().toLowerCase();
+      filtered = filtered.filter(song =>
+        song.title.toLowerCase().includes(query) ||
+        song.artist.toLowerCase().includes(query)
+      );
+    }
+
+    // Show only the 3 latest songs (assuming allSongs is sorted oldest->newest)
+    return filtered.slice(-3).reverse(); // newest first
+  }
 }

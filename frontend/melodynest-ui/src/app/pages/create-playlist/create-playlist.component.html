@@ -44,7 +44,7 @@
       />
       <!-- Lista de canciones placeholde hasta q haya canciones -->
       <div class="search-results">
-        <div class="song-card" *ngFor="let song of allSongs">
+        <div class="song-card" *ngFor="let song of filteredSongs">
           <span>{{ song.title }} — {{ song.artist }}</span>
           <button (click)="addSong(song)">Añadir</button>
         </div>
@@ -79,4 +79,3 @@
   
     <button class="save-btn" (click)="savePlaylist()">Crear Playlist</button>
   </div>
-  
