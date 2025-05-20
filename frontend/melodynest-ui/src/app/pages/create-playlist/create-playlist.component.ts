@@ -3,6 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { PlaylistService } from '../../services/playlist.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
+import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-create-playlist',
@@ -21,7 +23,11 @@ export class CreatePlaylistComponent implements OnInit {
   allSongs: any[] = [];
   selectedSongs: any[] = [];
 
-  constructor(private playlistService: PlaylistService) {}
+  constructor(
+    private playlistService: PlaylistService,
+    private router: Router,
+    private snackBar: MatSnackBar
+  ) {}
 
   ngOnInit() {
     this.loadSongs();
@@ -45,11 +51,9 @@ export class CreatePlaylistComponent implements OnInit {
     this.selectedSongs = this.selectedSongs.filter(s => s._id !== song._id);
   }
 
-  savePlaylist(form: NgForm) {
+  async savePlaylist(form: NgForm) {
     if (form.invalid) {
-      Object.values(form.controls).forEach(control => {
-        control.markAsTouched();
-      });
+      Object.values(form.controls).forEach(control => control.markAsTouched());
       return;
     }
 
@@ -62,12 +66,18 @@ export class CreatePlaylistComponent implements OnInit {
         songs: this.selectedSongs.map(s => s._id)
       };
 
-      this.playlistService.createPlaylist(payload);
-      alert('🎉 Playlist creada con éxito!');
-      // Optionally, navigate or reset form
+      await this.playlistService.createPlaylist(payload);
+      this.snackBar.open('Playlist creada con éxito 🎵', 'Cerrar', {
+        duration: 3000,
+        panelClass: ['snackbar-success']
+      });
+      this.router.navigate(['/dashboard']);
     } catch (error) {
       console.error('Error guardando playlist:', error);
-      alert('🚨 Error al crear la playlist');
+      this.snackBar.open('Error al crear la playlist ❌', 'Cerrar', {
+        duration: 3000,
+        panelClass: ['error-snackbar']
+      });
     }
   }
 

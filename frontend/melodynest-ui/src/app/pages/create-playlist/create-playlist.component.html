@@ -68,6 +68,9 @@
       />
       <!-- Lista de canciones+filtros -->
       <div class="search-results">
+        <div *ngIf="filteredSongs.length === 0" style="color: #ff4d4d; padding: 10px;">
+          No se ha encontrado ninguna canción.
+        </div>
         <div class="song-card" *ngFor="let song of filteredSongs">
           <span>{{ song.title }} — {{ song.artist }}</span>
           <button (click)="addSong(song)">Añadir</button>
