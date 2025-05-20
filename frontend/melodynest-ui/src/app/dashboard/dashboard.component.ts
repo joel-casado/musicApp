@@ -1,23 +1,39 @@
-import { Component }     from '@angular/core';
-import { CommonModule }  from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
-import { AuthService }   from '../auth/auth.service';
+import { AuthService } from '../auth/auth.service';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
   imports: [
     CommonModule,
-    RouterModule       // ← necesario para que routerLink y navegación funcionen
+    RouterModule
   ],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
-export class DashboardComponent {
+export class DashboardComponent implements OnInit {
+  songs: any[] = [];
+
   constructor(
     private auth: AuthService,
-    private router: Router
+    private router: Router,
+    private http: HttpClient
   ) {}
+
+  ngOnInit() {
+    this.http.get('http://localhost:5000/api/songs/user').subscribe({
+      next: (res: any) => {
+        console.log('[Dashboard] canciones recibidas →', res); // ✅ LOG DE PRUEBA
+        this.songs = res;
+      },
+      error: err => {
+        console.error('Error al cargar canciones', err);
+      }
+    });
+  }
 
   logout() {
     this.auth.logout();
