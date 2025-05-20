@@ -58,7 +58,7 @@ export class CreateSongComponent {
       error: err => {
         console.error(err);
         this.error = err.error?.message || 'No se pudo crear la canción';
-        this.snackBar.open('Error al crear la canción ❌', 'Cerrar', {
+        this.snackBar.open('Error al crear la canción ❌', 'Cerrar',{
           duration: 3000,
           panelClass: ['error-snackbar']
         });
