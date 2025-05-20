@@ -39,4 +39,8 @@ export class DashboardComponent implements OnInit {
     this.auth.logout();
     this.router.navigate(['/login']);
   }
+  openLink(url: string) {
+    window.open(url, '_blank'); // abre en nueva pestaña
+  }
+
 }
