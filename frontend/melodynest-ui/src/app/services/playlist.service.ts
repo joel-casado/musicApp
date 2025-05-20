@@ -16,4 +16,9 @@ export class PlaylistService {
   createPlaylist(data: any) {
     return firstValueFrom(this.http.post(`${this.baseUrl}/playlists`, data));
   }
+  
+  getPlaylistById(id: string) {
+  return this.http.get<any>(`http://localhost:5000/api/playlists/${id}`);
+  }
+
 }

@@ -1,0 +1,39 @@
+<div *ngIf="playlist" class="playlist-container">
+  <div class="playlist-header">
+    <img [src]="playlist.image" alt="Playlist Cover" class="playlist-cover" />
+    <div class="playlist-details">
+      <p class="playlist-type">Playlist</p>
+      <h1>{{ playlist.title }}</h1>
+      <p class="playlist-description">{{ playlist.description }}</p>
+    </div>
+  </div>
+
+  <div class="playlist-songs">
+    <div class="songs-header">
+      <span>#</span>
+      <span></span>
+      <span>Título</span>
+      <span>Artista</span>
+      <span>Duración</span>
+    </div>
+
+    <div class="song-row" *ngFor="let song of playlist.songs; let i = index">
+    <span>{{ i + 1 }}</span>
+    <span>
+        <button (click)="playSong(song)" class="icon-btn">
+        <i
+            class="fa-solid"
+            [ngClass]="{
+            'fa-circle-pause': isSongPlaying(song),
+            'fa-circle-play': !isSongPlaying(song)
+            }"
+        ></i>
+        </button>
+    </span>
+    <span>{{ song.title }}</span>
+    <span>{{ song.artist }}</span>
+    <span>{{ getSongDuration(song) }}</span>
+    </div>
+  </div>
+  <audio #audioPlayer style="display:none"></audio>
+</div>

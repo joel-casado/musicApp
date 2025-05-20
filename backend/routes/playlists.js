@@ -50,4 +50,17 @@ router.get('/user', auth, async (req, res) => {
   }
 });
 
+// Get a single playlist by ID
+router.get('/:id', async (req, res) => {
+  try {
+    const playlist = await Playlist.findById(req.params.id).populate('songs').populate('owner');
+    if (!playlist) {
+      return res.status(404).json({ message: 'Playlist not found' });
+    }
+    res.json(playlist);
+  } catch (err) {
+    res.status(500).json({ message: 'Error fetching playlist', error: err.message });
+  }
+});
+
 module.exports = router;

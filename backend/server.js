@@ -23,6 +23,9 @@ app.use(cors({
 app.use(express.json());
 app.use('/api/songs', songsRoutes);
 
+// Serve static files from /public
+app.use('/music', express.static(__dirname + '/public/music'));
+
 // 2) Logger simple (opcional, pero muy útil para debug)
 app.use((req, res, next) => {
   console.log(`${req.method} ${req.url}`);

@@ -24,7 +24,12 @@
           <div *ngIf="playlists.length === 0" class="card" style="text-align:center; color:#b3b3b3;">
             No has creado ninguna playlist aún.
           </div>
-          <div class="card" *ngFor="let playlist of playlists">
+          <div
+            class="card"
+            *ngFor="let playlist of playlists"
+            (click)="goToPlaylist(playlist._id)"
+            style="cursor:pointer"
+          >
             <div class="album-cover">
               <img
                 *ngIf="playlist.image"

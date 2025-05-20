@@ -7,6 +7,8 @@ import { authGuard }                 from './auth/auth.guard';
 import { CreateUserComponent }       from './create-user/create-user.component';
 import { CreateSongComponent }       from './pages/create-song/create-song.component';
 import { LibraryComponent }          from './biblioteca/library.component';
+import { PlaylistPageComponent }     from './pages/playlist-page/playlist-page.component';
+
 export const Routes: Route[] = [
   // raíz a login
   { path: '',      redirectTo: 'login', pathMatch: 'full' },
@@ -21,7 +23,9 @@ export const Routes: Route[] = [
   // crear cancion
   { path: 'song/new', component: CreateSongComponent },
   { path: 'biblioteca', component: LibraryComponent },
+  {path: 'playlist/:id', component: PlaylistPageComponent},
 
   // wildcard al login
-  { path: '**', redirectTo: 'login' },
+  { path: '**', redirectTo: 'login' }
+  
 ];
