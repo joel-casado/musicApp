@@ -13,16 +13,15 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
-  form!: FormGroup;        // 1) Declaras el campo
+  form!: FormGroup;
   error: string | null = null;
 
   constructor(
-    private fb: FormBuilder,   // 2) Inyectas el FormBuilder
+    private fb: FormBuilder,
     private auth: AuthService,
     private router: Router,
     private snackBar: MatSnackBar
   ) {
-    // 3) Aquí sí puedes usar fb porque ya está inicializado
     this.form = this.fb.group({
       email:    ['', [Validators.required, Validators.email]],
       password: ['', Validators.required]
@@ -47,7 +46,7 @@ export class LoginComponent {
         duration: 3000,
         panelClass: ['success-snackbar']
       });
-      localStorage.removeItem('userCreated'); // Lo limpiamos para que no vuelva a salir
+      localStorage.removeItem('userCreated');
     }
   }
 

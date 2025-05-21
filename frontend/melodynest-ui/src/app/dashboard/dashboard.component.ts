@@ -50,7 +50,7 @@ export class DashboardComponent implements OnInit {
     this.router.navigate(['/login']);
   }
   openLink(url: string) {
-    window.open(url, '_blank'); // abre en nueva pestaña
+    window.open(url, '_blank');
   }
   goToPlaylist(id: string) {
     this.router.navigate(['/playlist', id]);

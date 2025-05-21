@@ -1,4 +1,3 @@
-// src/app/services/playlist.service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
@@ -20,5 +19,7 @@ export class PlaylistService {
   getPlaylistById(id: string) {
   return this.http.get<any>(`http://localhost:5000/api/playlists/${id}`);
   }
-
+  updatePlaylist(id: string, data: any) {
+    return firstValueFrom(this.http.put(`${this.baseUrl}/playlists/${id}`, data));
+  }
 }

@@ -10,7 +10,6 @@
       <div style="display: flex; align-items: center; gap: 12px;">
         <h1>{{ playlist.title }}</h1>
         <button
-          *ngIf="isOwner()"
           class="edit-btn"
           (click)="goToEditPlaylist()"
           title="Editar playlist"
@@ -56,7 +55,6 @@
 
   <div class="player-bar" *ngIf="currentSong">
     <div class="player-bar-content">
-      <!-- Left: Song Info -->
       <div class="player-song-info">
         <img *ngIf="currentSong?.image" [src]="currentSong.image" alt="Song Cover" class="player-album-cover" />
         <div class="player-song-meta">
@@ -65,7 +63,6 @@
         </div>
       </div>
 
-      <!-- Center: Controls and Progress -->
       <div class="player-center">
         <div class="player-controls centered">
           <button (click)="playPrevious()" [disabled]="!hasPrevious()" class="icon-btn">
@@ -99,7 +96,6 @@
         </div>
       </div>
 
-      <!-- Right: Volume -->
       <div class="player-right">
         <div class="volume-control">
           <i

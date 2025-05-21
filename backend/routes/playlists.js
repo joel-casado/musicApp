@@ -4,11 +4,10 @@ const Playlist = require('../models/Playlist');
 const User = require('../models/User');
 const auth = require('../middleware/authMiddleware');
 
-// Create a new playlist
 router.post('/', auth, async (req, res) => {
   try {
     const { title, description, image, isPublic, songs } = req.body;
-    const userId = req.user._id; // <-- get user from token
+    const userId = req.user._id;
 
     const newPlaylist = new Playlist({
       title,
@@ -16,7 +15,7 @@ router.post('/', auth, async (req, res) => {
       image,
       isPublic,
       songs,
-      owner: userId, // <-- assign owner
+      owner: userId,
     });
 
     await newPlaylist.save();
@@ -27,7 +26,6 @@ router.post('/', auth, async (req, res) => {
   }
 });
 
-// Optional: Get all playlists
 router.get('/', async (req, res) => {
   try {
     const playlists = await Playlist.find().populate('songs').populate('owner');
@@ -37,7 +35,6 @@ router.get('/', async (req, res) => {
   }
 });
 
-// Get last 5 playlists for the authenticated user
 router.get('/user', auth, async (req, res) => {
   try {
     const userId = req.user._id;
@@ -52,7 +49,6 @@ router.get('/user', auth, async (req, res) => {
   }
 });
 
-// 1. Place this FIRST:
 router.get('/public', auth, async (req, res) => {
   try {
     const userId = req.user._id;
@@ -66,7 +62,6 @@ router.get('/public', auth, async (req, res) => {
   }
 });
 
-// 2. Place this AFTER:
 router.get('/:id', async (req, res) => {
   try {
     const playlist = await Playlist.findById(req.params.id).populate('songs').populate('owner');
@@ -76,6 +71,21 @@ router.get('/:id', async (req, res) => {
     res.json(playlist);
   } catch (err) {
     res.status(500).json({ message: 'Error fetching playlist', error: err.message });
+  }
+});
+
+router.put('/:id', auth, async (req, res) => {
+  try {
+    const playlist = await Playlist.findById(req.params.id);
+    if (!playlist) return res.status(404).json({ message: 'Playlist not found' });
+    if (playlist.owner.toString() !== req.user._id.toString()) {
+      return res.status(403).json({ message: 'No autorizado' });
+    }
+    Object.assign(playlist, req.body);
+    await playlist.save();
+    res.json({ message: 'Playlist actualizada', playlist });
+  } catch (err) {
+    res.status(500).json({ message: 'Error actualizando playlist', error: err.message });
   }
 });
 

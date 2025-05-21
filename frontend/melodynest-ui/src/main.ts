@@ -10,7 +10,7 @@ bootstrapApplication(AppComponent, {
   providers: [
     provideHttpClient(
       withFetch(),
-      withInterceptors([AuthInterceptor]) // ✅ este es el método moderno
+      withInterceptors([AuthInterceptor])
     ),
     provideRouter(Routes, withEnabledBlockingInitialNavigation())
   ]

@@ -25,7 +25,8 @@ export class PlaylistPageComponent implements OnInit, AfterViewInit {
   currentSongUrl: string | null = null;
   intervalId: any = null;
   progress: number = 0;
-  volume: number = 0.8; // Default volume (80%)
+  volume: number = 0.8;
+  loggedUserId: string | null = null;
 
   @ViewChild('audioPlayer') audioPlayer!: ElementRef<HTMLAudioElement>;
 
@@ -34,7 +35,7 @@ export class PlaylistPageComponent implements OnInit, AfterViewInit {
     private playlistService: PlaylistService,
     private cdr: ChangeDetectorRef,
     private router: Router,
-    private auth: AuthService // <-- inject AuthService
+    private auth: AuthService
     ) {}
 
   ngOnInit(): void {
@@ -43,23 +44,32 @@ export class PlaylistPageComponent implements OnInit, AfterViewInit {
       this.playlistService.getPlaylistById(playlistId).subscribe({
         next: (data) => {
           this.playlist = data;
+          this.cdr.detectChanges();
         },
         error: (err) => {
           console.error('Error loading playlist:', err);
         }
       });
     }
+
+    const userStr = localStorage.getItem('user');
+    if (userStr) {
+      try {
+        const user = JSON.parse(userStr);
+        this.loggedUserId = user._id || user.id || null;
+      } catch {
+        this.loggedUserId = null;
+      }
+    }
   }
 
   ngAfterViewInit(): void {
-    // Set initial volume when audio element is available
     if (this.audioPlayer?.nativeElement) {
       this.audioPlayer.nativeElement.volume = this.volume;
     }
   }
 
   playSong(song: any): void {
-    // Guard: wait for audioPlayer to be available
     if (!this.audioPlayer || !this.audioPlayer.nativeElement) return;
 
     if (this.currentSongUrl === song.url) {
@@ -70,7 +80,7 @@ export class PlaylistPageComponent implements OnInit, AfterViewInit {
     this.currentSong = song;
     this.currentSongUrl = song.url;
     this.audioPlayer.nativeElement.src = song.url;
-    this.audioPlayer.nativeElement.load(); // Ensure the new source is loaded
+    this.audioPlayer.nativeElement.load();
     this.audioPlayer.nativeElement.play();
     this.isPlaying = true;
 
@@ -86,7 +96,7 @@ export class PlaylistPageComponent implements OnInit, AfterViewInit {
         this.audioPlayer.nativeElement.play();
     }
     this.isPlaying = !this.isPlaying;
-    this.cdr.detectChanges(); // <-- Fix ExpressionChanged error
+    this.cdr.detectChanges();
     }
 
   stopSong(): void {
@@ -185,15 +195,11 @@ export class PlaylistPageComponent implements OnInit, AfterViewInit {
   }
 
   isOwner(): boolean {
-    const userId = this.auth.getUserId?.();
-    // Debug log:
-    console.log('userId:', userId, 'playlist.owner:', this.playlist?.owner);
-    if (!userId || !this.playlist?.owner) return false;
-    // Handle both cases: owner as object or string
-    if (typeof this.playlist.owner === 'object') {
-      return this.playlist.owner._id === userId;
-    }
-    return this.playlist.owner === userId;
+    if (!this.loggedUserId || !this.playlist?.owner) return false;
+    const ownerId = typeof this.playlist.owner === 'object'
+      ? this.playlist.owner._id
+      : this.playlist.owner;
+    return String(ownerId) === String(this.loggedUserId);
   }
 
   goToEditPlaylist() {

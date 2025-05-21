@@ -1,7 +1,6 @@
-// backend/models/Playlist.js
-const mongoose = require('mongoose');
+let mongoose = require('mongoose');
 
-const playlistSchema = new mongoose.Schema({
+let playlistSchema = new mongoose.Schema({
   title:       { type: String, required: true },
   description: { type: String },
   isPublic:    { type: Boolean, default: true },

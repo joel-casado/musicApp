@@ -17,7 +17,6 @@ export class CreateUserComponent {
   email: string = '';
   password: string = '';
 
-  // ✅ Declare these at the class level
   successMessage: string = '';
   errorMessage: string = '';
 
@@ -39,7 +38,6 @@ export class CreateUserComponent {
         this.errorMessage = '';
         localStorage.setItem('userCreated', 'true');
         this.router.navigate(['/login']);
-        // Optionally reset form
         this.username = '';
         this.email = '';
         this.password = '';

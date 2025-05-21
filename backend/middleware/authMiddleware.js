@@ -1,27 +1,22 @@
-const jwt = require('jsonwebtoken');
-const User = require('../models/User'); // Ajusta la ruta si es distinta
+let jwt = require('jsonwebtoken');
+let User = require('../models/User');
 
-const auth = async (req, res, next) => {
-  const authHeader = req.header('Authorization');
-
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    return res.status(401).json({ error: 'No token provided' });
+let auth = async (req, res, next) => {
+  let authHeader = req.header('Authorization');
+  if (!authHeader?.startsWith('Bearer ')) {
+    return res.status(401).json({ error: 'No se ha dado token' });
   }
 
-  const token = authHeader.split(' ')[1];
+  let token = authHeader.split(' ')[1];
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET); // Asegúrate que esté definido en .env
+    let decoded = jwt.verify(token, process.env.JWT_SECRET);
+    let user = await User.findById(decoded.sub);
+    if (!user) return res.status(401).json({ error: 'Invalid token: usuario no encontrado' });
 
-    const user = await User.findById(decoded.sub); // usamos "sub" como subject (lo usaste tú)
-
-    if (!user) {
-      return res.status(401).json({ error: 'Invalid token: user not found' });
-    }
-
-    req.user = user; // lo inyectamos en la request
+    req.user = user;
     next();
-  } catch (err) {
+  } catch {
     return res.status(401).json({ error: 'Token inválido o expirado' });
   }
 };

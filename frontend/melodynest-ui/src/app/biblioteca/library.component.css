@@ -3,7 +3,6 @@
     background-color: #121212;
     color: white;
     font-family: 'Manrope', 'Helvetica Neue', Helvetica, sans-serif;
-    /* Remove height and overflow here */
   }
 
   .dashboard {
@@ -78,7 +77,7 @@
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
     gap: 24px;
-    max-width: 880px; /* 5 columns * 160px + 4*24px gap = 880px */
+    max-width: 880px;
     justify-content: flex-start;
   }
 
@@ -187,7 +186,7 @@
     font-size: 1rem;
     outline: none;
     transition: border 0.2s;
-    margin-left: 0; /* Remove any centering margin */
+    margin-left: 0;
   }
   .search-bar:focus {
     border-color: #1db954;

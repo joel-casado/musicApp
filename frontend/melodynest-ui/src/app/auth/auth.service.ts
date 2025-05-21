@@ -1,4 +1,3 @@
-// src/app/auth/auth.service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { tap }        from 'rxjs/operators';
@@ -17,7 +16,6 @@ export class AuthService {
 
   constructor(private http: HttpClient) {}
 
-  /** Lanza POST /login y guarda el token en localStorage */
   login(email: string, password: string): Observable<LoginResponse> {
     return this.http
       .post<LoginResponse>(`${this.apiUrl}/login`, { email, password })
@@ -41,7 +39,6 @@ export class AuthService {
     if (!token) return null;
     try {
       const payload = JSON.parse(atob(token.split('.')[1]));
-      // Try all possible keys
       return payload.userId || payload._id || payload.id || null;
     } catch {
       return null;

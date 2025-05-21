@@ -19,7 +19,6 @@ export class SongsService {
   constructor(private http: HttpClient) {}
 
   create(song: Song): Observable<Song> {
-    // enviamos un JSON convencional
     return this.http.post<Song>(this.apiUrl, song);
   }
 

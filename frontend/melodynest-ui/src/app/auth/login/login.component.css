@@ -94,3 +94,18 @@ button:hover:enabled {
 .signup-link a:hover {
   text-decoration: underline;
 }
+
+.forgot-link {
+  margin-top: 1rem;
+  text-align: center;
+}
+.forgot-link a {
+  color: #1db954;
+  text-decoration: none;
+  font-size: 0.98rem;
+  font-weight: 500;
+}
+.forgot-link a:hover {
+  text-decoration: underline;
+  color: #1ed760;
+}

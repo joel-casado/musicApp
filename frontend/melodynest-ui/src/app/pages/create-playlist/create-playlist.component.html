@@ -47,7 +47,6 @@
         La portada es obligatoria.
       </div>
 
-        <!-- Preview de la foto -->
         <div class="image-preview" *ngIf="image">
         <img [src]="image" alt="Playlist cover image" />
         </div>
@@ -69,7 +68,6 @@
         name="searchQuery"
         placeholder="Busca una canción..."
       />
-      <!-- Lista de canciones+filtros -->
       <div class="search-results">
         <div *ngIf="filteredSongs.length === 0" style="color: #ff4d4d; padding: 10px;">
           No se ha encontrado ninguna canción.

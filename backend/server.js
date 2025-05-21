@@ -2,11 +2,10 @@
 require('dotenv').config();
 const express  = require('express');
 const mongoose = require('mongoose');
-const bcrypt   = require('bcryptjs');    // usa bcryptjs para evitar problemas de compilación
+const bcrypt   = require('bcryptjs');
 const cors     = require('cors');
 const jwt      = require('jsonwebtoken');
 
-// Importar modelos
 const User     = require('./models/User');
 const Song     = require('./models/Song');
 const Playlist = require('./models/Playlist');
@@ -15,7 +14,6 @@ const path     = require('path');
 const songsRoutes = require('./routes/songs');
 
 
-// 1) Middleware
 app.use(cors({
   origin: 'http://localhost:4200',
   credentials: true
@@ -23,10 +21,8 @@ app.use(cors({
 app.use(express.json());
 app.use('/api/songs', songsRoutes);
 
-// Serve static files from /public
 app.use('/music', express.static(__dirname + '/public/music'));
 
-// 2) Logger simple (opcional, pero muy útil para debug)
 app.use((req, res, next) => {
   console.log(`${req.method} ${req.url}`);
   next();
@@ -34,14 +30,11 @@ app.use((req, res, next) => {
 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// 3) Montar rutas
 const authRoutes = require('./routes/auth');
 app.use('/api/auth', authRoutes);
-// in backend/index.js or app.js
 app.use('/api/playlists', require('./routes/playlists'));
 
 
-// 4) Rutas extra (test, crear usuario, etc)
 app.get('/', (req, res) => res.send('Node.js está funcionando'));
 
 app.post('/api/users', async (req, res) => {
@@ -91,7 +84,6 @@ app.get('/test-all', async (req, res) => {
   }
 });
 
-// 5) Conexión a MongoDB y arrancar el servidor
 const PORT = process.env.PORT || 5000;
 mongoose
   .connect(process.env.MONGO_URI)

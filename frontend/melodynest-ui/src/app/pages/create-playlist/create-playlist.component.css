@@ -1,4 +1,3 @@
-/* General wrapper padding */
 .create-playlist-wrapper {
   max-width: 800px;
   margin: 60px auto;
@@ -10,7 +9,6 @@
   font-family: 'Helvetica Neue', sans-serif;
 }
 
-/* Header styling */
 .header h1 {
   color: #1db954;
   margin-bottom: 10px;
@@ -21,7 +19,6 @@
   margin-bottom: 30px;
 }
 
-/* Form styles */
 .playlist-form label {
   display: block;
   margin-top: 20px;
@@ -47,7 +44,6 @@
   border-color: #1db954;
 }
 
-/* Image preview */
 .image-preview {
   margin-top: 15px;
   text-align: center;
@@ -61,7 +57,6 @@
   border: 2px solid #1db954;
 }
 
-/* Toggle checkbox */
 .public-toggle {
   margin-top: 20px;
   font-size: 14px;
@@ -71,7 +66,6 @@
   margin-right: 8px;
 }
 
-/* Search section */
 .search-section {
   margin-top: 40px;
 }
@@ -92,7 +86,6 @@
   margin-bottom: 20px;
 }
 
-/* Song card styling */
 .search-results {
   display: flex;
   flex-direction: column;
@@ -124,7 +117,6 @@
   background-color: #17a74a;
 }
 
-/* Save button */
 .save-btn {
   margin-top: 40px;
   background-color: #1db954;
@@ -143,7 +135,6 @@
   background-color: #1aa34a;
 }
 
-/* Playlist preview section */
 .preview-section {
   margin-top: 40px;
   padding: 30px;
@@ -157,7 +148,6 @@
   margin-bottom: 20px;
 }
 
-/* Playlist card */
 .playlist-preview-card {
   display: flex;
   gap: 20px;
@@ -186,7 +176,6 @@
   max-width: 400px;
 }
 
-/* Songs list in preview */
 .playlist-songs ul {
   list-style: none;
   padding: 0;

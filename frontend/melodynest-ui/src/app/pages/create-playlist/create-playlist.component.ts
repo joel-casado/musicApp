@@ -1,9 +1,8 @@
-// src/app/pages/create-playlist/create-playlist.component.ts
 import { Component, OnInit } from '@angular/core';
 import { PlaylistService } from '../../services/playlist.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
@@ -23,13 +22,27 @@ export class CreatePlaylistComponent implements OnInit {
   allSongs: any[] = [];
   selectedSongs: any[] = [];
 
+  isEditMode = false;
+  playlistId: string | null = null;
+
   constructor(
     private playlistService: PlaylistService,
     private router: Router,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private route: ActivatedRoute
   ) {}
 
-  ngOnInit() {
+  async ngOnInit() {
+    this.playlistId = this.route.snapshot.paramMap.get('id');
+    if (this.playlistId) {
+      this.isEditMode = true;
+      const playlist = await this.playlistService.getPlaylistById(this.playlistId).toPromise();
+      this.title = playlist.title;
+      this.description = playlist.description;
+      this.isPublic = playlist.isPublic;
+      this.image = playlist.image;
+      this.selectedSongs = playlist.songs || [];
+    }
     this.loadSongs();
   }
 
@@ -66,15 +79,23 @@ export class CreatePlaylistComponent implements OnInit {
         songs: this.selectedSongs.map(s => s._id)
       };
 
-      await this.playlistService.createPlaylist(payload);
-      this.snackBar.open('Playlist creada con éxito 🎵', 'Cerrar', {
-        duration: 3000,
-        panelClass: ['snackbar-success']
-      });
+      if (this.isEditMode && this.playlistId) {
+        await this.playlistService.updatePlaylist(this.playlistId, payload);
+        this.snackBar.open('Playlist actualizada con éxito 🎵', 'Cerrar', {
+          duration: 3000,
+          panelClass: ['snackbar-success']
+        });
+      } else {
+        await this.playlistService.createPlaylist(payload);
+        this.snackBar.open('Playlist creada con éxito 🎵', 'Cerrar', {
+          duration: 3000,
+          panelClass: ['snackbar-success']
+        });
+      }
       this.router.navigate(['/dashboard']);
     } catch (error) {
       console.error('Error guardando playlist:', error);
-      this.snackBar.open('Error al crear la playlist ❌', 'Cerrar', {
+      this.snackBar.open('Error al guardar la playlist ❌', 'Cerrar', {
         duration: 3000,
         panelClass: ['error-snackbar']
       });
@@ -92,12 +113,10 @@ export class CreatePlaylistComponent implements OnInit {
       );
     }
 
-    // Exclude already selected songs
     filtered = filtered.filter(song =>
       !this.selectedSongs.some(sel => sel._id === song._id)
     );
 
-    // Show only the 3 latest (newest first)
     return filtered.slice(-3).reverse();
   }
   goToDashboard() {

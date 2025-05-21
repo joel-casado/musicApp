@@ -91,17 +91,15 @@ button:hover {
 }
 
 .icon-btn:hover {
-  color: #1db954; /* Spotify green */
+  color: #1db954;
 }
 
-/* Add this or adjust as needed */
 .song-row .icon-btn {
   margin-right: 12px;
   font-size: 1.6rem;
   padding: 4px 8px;
 }
 
-/* --- PLAYER BAR --- */
 .player-bar {
   position: fixed;
   bottom: 0;
@@ -272,7 +270,6 @@ button:hover {
   accent-color: #21e065;
 }
 
-/* filepath: [playlist-page.component.css](http://_vscodecontentref_/1) */
 .back-btn {
   position: absolute;
   top: 24px;
@@ -325,4 +322,14 @@ button:hover {
 }
 .edit-btn:hover {
   color: #1db954;
+}
+.edit-btn.not-owner {
+  color: #888 !important;
+  cursor: not-allowed !important;
+  opacity: 0.6;
+}
+.edit-btn:disabled {
+  color: #888 !important;
+  cursor: not-allowed !important;
+  opacity: 0.6;
 }
