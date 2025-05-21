@@ -48,7 +48,7 @@
           <div *ngIf="songs.length === 0" class="card" style="text-align:center; color:#b3b3b3;">
             No has añadido ninguna canción aún.
           </div>
-          <div class="card" *ngFor="let song of songs" (click)="openLink(song.url)">
+          <div class="card" *ngFor="let song of songs">
             <div class="album-cover">
               <img
                 [src]="song.image"
