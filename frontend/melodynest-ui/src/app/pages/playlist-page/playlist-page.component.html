@@ -18,22 +18,50 @@
     </div>
 
     <div class="song-row" *ngFor="let song of playlist.songs; let i = index">
-    <span>{{ i + 1 }}</span>
-    <span>
+      <span>{{ i + 1 }}</span>
+      <span>
         <button (click)="playSong(song)" class="icon-btn">
-        <i
+          <i
             class="fa-solid"
             [ngClass]="{
-            'fa-circle-pause': isSongPlaying(song),
-            'fa-circle-play': !isSongPlaying(song)
+              'fa-circle-pause': isSongPlaying(song),
+              'fa-circle-play': !isSongPlaying(song)
             }"
-        ></i>
+          ></i>
         </button>
-    </span>
-    <span>{{ song.title }}</span>
-    <span>{{ song.artist }}</span>
-    <span>{{ getSongDuration(song) }}</span>
+      </span>
+      <span>{{ song.title }}</span>
+      <span>{{ song.artist }}</span>
+      <span>{{ getSongDuration(song) }}</span>
     </div>
   </div>
-  <audio #audioPlayer style="display:none"></audio>
+
+  <audio #audioPlayer style="display: none"></audio>
+</div>
+
+<!-- Player Bar -->
+<div class="player-bar" *ngIf="currentSong">
+  <div class="player-song-info">
+    <span class="title">{{ currentSong.title }}</span>
+    <span class="artist">{{ currentSong.artist }}</span>
+  </div>
+
+  <div class="player-controls">
+    <button (click)="stopSong()">
+      <i class="fa-solid fa-stop"></i>
+    </button>
+    <button (click)="togglePlayPause()">
+      <i
+        class="fa-solid"
+        [ngClass]="{
+          'fa-pause': isPlaying,
+          'fa-play': !isPlaying
+        }"
+      ></i>
+    </button>
+  </div>
+
+  <div class="progress-bar-wrapper">
+    <div class="progress-bar" [style.width.%]="progress"></div>
+  </div>
 </div>

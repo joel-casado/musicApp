@@ -1,4 +1,9 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  ElementRef
+} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { PlaylistService } from '../../services/playlist.service';
 import { CommonModule } from '@angular/common';
@@ -14,8 +19,11 @@ export class PlaylistPageComponent implements OnInit {
   playlist: any = null;
   currentSong: any = null;
   isPlaying: boolean = false;
-  @ViewChild('audioPlayer') audioPlayer!: ElementRef<HTMLAudioElement>;
   currentSongUrl: string | null = null;
+  intervalId: any = null;
+  progress: number = 0;
+
+  @ViewChild('audioPlayer') audioPlayer!: ElementRef<HTMLAudioElement>;
 
   constructor(
     private route: ActivatedRoute,
@@ -38,27 +46,69 @@ export class PlaylistPageComponent implements OnInit {
 
   playSong(song: any): void {
     if (this.currentSongUrl === song.url) {
+      this.togglePlayPause();
+      return;
+    }
+
+    this.currentSong = song;
+    this.currentSongUrl = song.url;
+    this.audioPlayer.nativeElement.src = song.url;
+    this.audioPlayer.nativeElement.play();
+    this.isPlaying = true;
+
+    this.trackProgress();
+  }
+
+  togglePlayPause(): void {
+    if (!this.audioPlayer?.nativeElement) return;
+
+    if (this.isPlaying) {
       this.audioPlayer.nativeElement.pause();
-      this.currentSongUrl = null;
     } else {
-      this.currentSongUrl = song.url;
-      this.audioPlayer.nativeElement.src = song.url;
       this.audioPlayer.nativeElement.play();
     }
+    this.isPlaying = !this.isPlaying;
+  }
+
+  stopSong(): void {
+    this.audioPlayer.nativeElement.pause();
+    this.audioPlayer.nativeElement.currentTime = 0;
+    this.currentSongUrl = null;
+    this.currentSong = null;
+    this.isPlaying = false;
+    this.progress = 0;
+    clearInterval(this.intervalId);
+  }
+
+  isSongPlaying(song: any): boolean {
+    return (
+      this.currentSongUrl === song.url &&
+      !this.audioPlayer?.nativeElement.paused
+    );
   }
 
   getSongDuration(song: any): string {
-  const totalSeconds = song.duration; // assuming duration is stored as seconds
-  const minutes = Math.floor(totalSeconds / 60);
-  const seconds = totalSeconds % 60;
-  const paddedSeconds = seconds.toString().padStart(2, '0');
-  return `${minutes}:${paddedSeconds}`;
+    const totalSeconds = song.duration; // stored in seconds
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    const paddedSeconds = seconds.toString().padStart(2, '0');
+    return `${minutes}:${paddedSeconds}`;
   }
 
+  trackProgress(): void {
+    clearInterval(this.intervalId); // avoid duplicates
 
-  isSongPlaying(song: any): boolean {
-    return this.currentSongUrl === song.url && !this.audioPlayer?.nativeElement.paused;
+    this.intervalId = setInterval(() => {
+      const player = this.audioPlayer.nativeElement;
+      if (player.duration) {
+        this.progress = (player.currentTime / player.duration) * 100;
+      } else {
+        this.progress = 0;
+      }
+
+      if (player.ended) {
+        this.stopSong();
+      }
+    }, 500);
   }
-
-  
 }
