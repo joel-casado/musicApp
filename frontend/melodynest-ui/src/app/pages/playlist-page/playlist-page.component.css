@@ -1,3 +1,5 @@
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css');
+
 .playlist-container {
   padding: 2rem;
   background: #121212;
@@ -58,6 +60,11 @@
   transition: background 0.2s;
 }
 
+.songs-header,
+.song-row {
+  grid-template-columns: 40px 48px 2fr 2fr 80px;
+}
+
 .song-row:hover {
   background: #1a1a1a;
 }
@@ -87,59 +94,235 @@ button:hover {
   color: #1db954; /* Spotify green */
 }
 
+/* Add this or adjust as needed */
+.song-row .icon-btn {
+  margin-right: 12px;
+  font-size: 1.6rem;
+  padding: 4px 8px;
+}
+
+/* --- PLAYER BAR --- */
 .player-bar {
   position: fixed;
   bottom: 0;
   left: 0;
-  width: 100%;
-  background-color: #181818;
-  color: white;
+  width: 100vw;
+  background: #181818;
+  color: #fff;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  padding: 0;
+  height: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.player-bar-content {
+  width: 100vw;
+  max-width: 1920px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 20px;
-  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5);
-  z-index: 1000;
+  padding: 0 32px;
+  height: 100%;
+  box-sizing: border-box;
 }
 
 .player-song-info {
   display: flex;
+  align-items: center;
+  min-width: 0;
+  flex: 1 1 0;
+  max-width: 320px;
+  gap: 16px;
+}
+
+.player-album-cover {
+  width: 56px;
+  height: 56px;
+  object-fit: cover;
+  border-radius: 6px;
+  margin-right: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.player-song-meta {
+  display: flex;
   flex-direction: column;
-  gap: 2px;
+  min-width: 0;
 }
 
-.player-song-info .title {
-  font-weight: bold;
+.player-song-meta .title {
+  font-weight: 600;
+  font-size: 1rem;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.player-controls {
+.player-song-meta .artist {
+  font-size: 0.95rem;
+  color: #b3b3b3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.player-center {
+  flex: 2 1 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+}
+
+.player-controls.centered {
   display: flex;
   align-items: center;
-  gap: 15px;
+  justify-content: center;
+  gap: 32px;
+  margin-bottom: 6px;
 }
 
-.player-controls button {
+.icon-btn {
   background: none;
   border: none;
-  color: white;
-  font-size: 1.2rem;
+  color: #fff;
+  font-size: 2rem;
   cursor: pointer;
+  transition: color 0.2s;
+  padding: 0 8px;
+}
+
+.icon-btn:disabled,
+.icon-btn .disabled {
+  color: #555;
+  cursor: not-allowed;
+}
+
+.icon-btn:hover:not(:disabled) {
+  color: #1db954;
+}
+
+.player-progress {
+  display: flex;
+  align-items: center;
+  width: 420px;
+  max-width: 60vw;
+  gap: 12px;
+}
+
+.player-progress .time {
+  font-size: 0.95rem;
+  color: #b3b3b3;
+  min-width: 40px;
+  text-align: center;
 }
 
 .progress-bar-wrapper {
-  position: absolute;
-  bottom: 0;
-  left: 0;
+  flex: 1 1 0;
   height: 4px;
-  width: 100%;
-  background-color: #333;
+  background: #333;
+  border-radius: 2px;
+  overflow: hidden;
+  position: relative;
 }
 
 .progress-bar {
   height: 100%;
-  background-color: #1db954;
+  background: #1db954;
   transition: width 0.1s linear;
 }
 
+.player-right {
+  flex: 1 1 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 24px;
+  min-width: 120px;
+}
 
+.volume-control {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 120px;
+}
 
+.volume-control i {
+  font-size: 1.3rem;
+  color: #b3b3b3;
+  transition: color 0.2s;
+}
+
+.volume-control input[type="range"] {
+  width: 100px;
+  accent-color: #1db954;
+  background: transparent;
+  cursor: pointer;
+  height: 4px;
+  margin-left: 4px;
+}
+
+.volume-control input[type="range"]:hover {
+  accent-color: #21e065;
+}
+
+/* filepath: [playlist-page.component.css](http://_vscodecontentref_/1) */
+.back-btn {
+  position: absolute;
+  top: 24px;
+  right: 32px;
+  background: none;
+  border: none;
+  color: #b3b3b3;
+  font-size: 1.1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: color 0.2s;
+  z-index: 10;
+}
+.back-btn:hover {
+  color: #1db954;
+}
+
+.playlist-owner {
+  margin-top: 0.5rem;
+  color: #b3b3b3;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.player-progress input[type="range"].progress-slider {
+  flex: 1 1 0;
+  height: 4px;
+  background: transparent;
+  accent-color: #1db954;
+  margin: 0 8px;
+  cursor: pointer;
+}
+.player-progress input[type="range"].progress-slider:focus {
+  outline: none;
+}
+
+.edit-btn {
+  background: none;
+  border: none;
+  color: #b3b3b3;
+  font-size: 1.3rem;
+  cursor: pointer;
+  transition: color 0.2s;
+  margin-left: 8px;
+  padding: 4px;
+}
+.edit-btn:hover {
+  color: #1db954;
+}

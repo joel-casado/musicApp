@@ -8,6 +8,7 @@ import { CreateUserComponent }       from './create-user/create-user.component';
 import { CreateSongComponent }       from './pages/create-song/create-song.component';
 import { LibraryComponent }          from './biblioteca/library.component';
 import { PlaylistPageComponent }     from './pages/playlist-page/playlist-page.component';
+import { BuscarComponent }           from './buscar/buscar.component'; // <-- add this line
 
 export const Routes: Route[] = [
   // raíz a login
@@ -21,9 +22,11 @@ export const Routes: Route[] = [
   { path: 'dashboard',     component: DashboardComponent,     canActivate: [ authGuard ] },
   { path: 'playlist/new',  component: CreatePlaylistComponent, canActivate: [ authGuard ] },
   // crear cancion
-  { path: 'song/new', component: CreateSongComponent },
-  { path: 'biblioteca', component: LibraryComponent },
-  {path: 'playlist/:id', component: PlaylistPageComponent},
+  { path: 'song/new', component: CreateSongComponent, canActivate: [ authGuard ] },
+  { path: 'biblioteca', component: LibraryComponent, canActivate: [ authGuard ] },
+  {path: 'playlist/:id', component: PlaylistPageComponent, canActivate: [ authGuard ]},
+  { path: 'buscar', component: BuscarComponent, canActivate: [ authGuard ] },
+  { path: 'playlist/:id/edit', component: CreatePlaylistComponent, canActivate: [authGuard]},
 
   // wildcard al login
   { path: '**', redirectTo: 'login' }

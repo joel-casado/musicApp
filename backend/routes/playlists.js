@@ -41,16 +41,32 @@ router.get('/', async (req, res) => {
 router.get('/user', auth, async (req, res) => {
   try {
     const userId = req.user._id;
-    const playlists = await Playlist.find({ owner: userId })
-      .sort({ createdAt: -1 })
-      .limit(5);
+    let query = Playlist.find({ owner: userId }).sort({ createdAt: -1 });
+    if (req.query.limit) {
+      query = query.limit(Number(req.query.limit));
+    }
+    const playlists = await query;
     res.json(playlists);
   } catch (err) {
     res.status(500).json({ message: 'Error fetching user playlists', error: err.message });
   }
 });
 
-// Get a single playlist by ID
+// 1. Place this FIRST:
+router.get('/public', auth, async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const playlists = await Playlist.find({
+      isPublic: true,
+      owner: { $ne: userId }
+    }).sort({ createdAt: -1 });
+    res.json(playlists);
+  } catch (err) {
+    res.status(500).json({ message: 'Error fetching public playlists', error: err.message });
+  }
+});
+
+// 2. Place this AFTER:
 router.get('/:id', async (req, res) => {
   try {
     const playlist = await Playlist.findById(req.params.id).populate('songs').populate('owner');

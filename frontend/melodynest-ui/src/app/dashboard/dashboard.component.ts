@@ -25,9 +25,9 @@ export class DashboardComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.http.get('http://localhost:5000/api/songs/user').subscribe({
+    this.http.get('http://localhost:5000/api/songs/user?limit=5').subscribe({
       next: (res: any) => {
-        console.log('[Dashboard] canciones recibidas →', res); // ✅ LOG DE PRUEBA
+        console.log('[Dashboard] canciones recibidas →', res);
         this.songs = res;
       },
       error: err => {
@@ -35,8 +35,7 @@ export class DashboardComponent implements OnInit {
       }
     });
 
-    // Load last 5 playlists
-    this.http.get('http://localhost:5000/api/playlists/user').subscribe({
+    this.http.get('http://localhost:5000/api/playlists/user?limit=5').subscribe({
       next: (res: any) => {
         this.playlists = res;
       },

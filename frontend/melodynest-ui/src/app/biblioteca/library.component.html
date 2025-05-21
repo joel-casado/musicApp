@@ -1,26 +1,66 @@
-<div class="main-content">
+<div class="main-content biblioteca-content">
+  <button class="back-btn" (click)="goToDashboard()" title="Volver al dashboard">
+    <i class="fa-solid fa-arrow-left"></i> Volver al Dashboard
+  </button>
+
   <h1>Tu Biblioteca</h1>
 
-   <section class="section">
-        <h2>Made for You</h2>
-        <div class="grid">
-          <div class="card" *ngFor="let p of playlists">
-            <div class="album-cover"></div>
-            <p>Playlist {{ p }}</p>
-          </div>
+  <div class="search-section">
+    <input
+      type="text"
+      [(ngModel)]="searchQuery"
+      name="searchQuery"
+      placeholder="Busca una playlist o canción..."
+      class="search-bar"
+    />
+  </div>
+
+  <section class="section">
+    <h2>Tus Playlists</h2>
+    <div class="grid">
+      <div
+        class="card playlist-card"
+        *ngFor="let p of filteredPlaylists"
+        (click)="goToPlaylist(p._id)"
+        style="cursor:pointer"
+      >
+        <div class="album-cover">
+          <img
+            *ngIf="p.image"
+            [src]="p.image"
+            [alt]="p.title"
+            style="width: 100%; height: 100%; object-fit: cover; border-radius: 4px;"
+          />
         </div>
-      </section>
+        <div class="playlist-meta">
+          <p class="playlist-title">{{ p.title }}</p>
+          <p class="playlist-desc">{{ p.description }}</p>
+        </div>
+      </div>
+      <div *ngIf="filteredPlaylists.length === 0" class="card empty-card">
+        No has creado ninguna playlist aún.
+      </div>
+    </div>
+  </section>
 
   <section class="section">
     <h2>Tus Canciones</h2>
     <div class="grid">
-      <div class="card" *ngFor="let s of songs">
+      <div class="card song-card" *ngFor="let s of filteredSongs">
         <div class="album-cover">
-          <img  [src]="s.image"
-                [alt]="s.title"
-                style="width: 100%; height: 100%; object-fit: cover; border-radius: 4px;" />
+          <img
+            [src]="s.image"
+            [alt]="s.title"
+            style="width: 100%; height: 100%; object-fit: cover; border-radius: 4px;"
+          />
         </div>
-        <p class="song-title">{{ s.title }}</p>
+        <div class="song-meta">
+          <p class="song-title">{{ s.title }}</p>
+          <p class="song-artist">{{ s.artist }}</p>
+        </div>
+      </div>
+      <div *ngIf="filteredSongs.length === 0" class="card empty-card">
+        No has añadido ninguna canción aún.
       </div>
     </div>
   </section>

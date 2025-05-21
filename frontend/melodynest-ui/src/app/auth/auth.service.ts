@@ -35,4 +35,16 @@ export class AuthService {
   isLoggedIn(): boolean {
     return !!this.getToken();
   }
+
+  getUserId(): string | null {
+    const token = this.getToken();
+    if (!token) return null;
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      // Try all possible keys
+      return payload.userId || payload._id || payload.id || null;
+    } catch {
+      return null;
+    }
+  }
 }

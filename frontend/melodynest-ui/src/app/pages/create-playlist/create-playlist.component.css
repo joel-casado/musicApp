@@ -214,3 +214,21 @@
 .playlist-songs button:hover {
   background-color: #e60000;
 }
+.back-btn {
+  position: absolute;
+  top: 24px;
+  right: 32px;
+  background: none;
+  border: none;
+  color: #b3b3b3;
+  font-size: 1.1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: color 0.2s;
+  z-index: 10;
+}
+.back-btn:hover {
+  color: #1db954;
+}

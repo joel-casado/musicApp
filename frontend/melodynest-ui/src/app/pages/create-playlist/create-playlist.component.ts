@@ -100,4 +100,7 @@ export class CreatePlaylistComponent implements OnInit {
     // Show only the 3 latest (newest first)
     return filtered.slice(-3).reverse();
   }
+  goToDashboard() {
+  this.router.navigate(['/dashboard']);
+  }
 }

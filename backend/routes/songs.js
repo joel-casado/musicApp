@@ -27,11 +27,12 @@ router.use((req, res, next) => {
 // 🔄 GET /api/songs/user → Últimas 5 canciones del usuario autenticado
 router.get('/user', auth, async (req, res) => {
   try {
-    const userId = req.user._id; // ✅ Usuario real desde el token
-    const songs = await Song.find({ uploadedBy: userId })
-      .sort({ createdAt: -1 })
-      .limit(5);
-
+    const userId = req.user._id;
+    let query = Song.find({ uploadedBy: userId }).sort({ createdAt: -1 });
+    if (req.query.limit) {
+      query = query.limit(Number(req.query.limit));
+    }
+    const songs = await query;
     res.json(songs);
   } catch (err) {
     console.error('Error en GET /user:', err);

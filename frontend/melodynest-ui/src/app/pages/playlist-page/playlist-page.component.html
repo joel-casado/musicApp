@@ -1,10 +1,28 @@
+<audio #audioPlayer style="display: none"></audio>
 <div *ngIf="playlist" class="playlist-container">
+  <button class="back-btn" (click)="goToDashboard()" title="Volver al dashboard">
+    <i class="fa-solid fa-arrow-left"></i> Volver al Dashboard
+  </button>
   <div class="playlist-header">
     <img [src]="playlist.image" alt="Playlist Cover" class="playlist-cover" />
     <div class="playlist-details">
       <p class="playlist-type">Playlist</p>
-      <h1>{{ playlist.title }}</h1>
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <h1>{{ playlist.title }}</h1>
+        <button
+          *ngIf="isOwner()"
+          class="edit-btn"
+          (click)="goToEditPlaylist()"
+          title="Editar playlist"
+        >
+          <i class="fa-solid fa-pen-to-square"></i>
+        </button>
+      </div>
       <p class="playlist-description">{{ playlist.description }}</p>
+      <p class="playlist-owner">
+        <i class="fa-solid fa-user"></i>
+        {{ playlist.owner?.username || 'Desconocido' }}
+      </p>
     </div>
   </div>
 
@@ -36,32 +54,72 @@
     </div>
   </div>
 
-  <audio #audioPlayer style="display: none"></audio>
-</div>
+  <div class="player-bar" *ngIf="currentSong">
+    <div class="player-bar-content">
+      <!-- Left: Song Info -->
+      <div class="player-song-info">
+        <img *ngIf="currentSong?.image" [src]="currentSong.image" alt="Song Cover" class="player-album-cover" />
+        <div class="player-song-meta">
+          <span class="title">{{ currentSong.title }}</span>
+          <span class="artist">{{ currentSong.artist }}</span>
+        </div>
+      </div>
 
-<!-- Player Bar -->
-<div class="player-bar" *ngIf="currentSong">
-  <div class="player-song-info">
-    <span class="title">{{ currentSong.title }}</span>
-    <span class="artist">{{ currentSong.artist }}</span>
-  </div>
+      <!-- Center: Controls and Progress -->
+      <div class="player-center">
+        <div class="player-controls centered">
+          <button (click)="playPrevious()" [disabled]="!hasPrevious()" class="icon-btn">
+            <i class="fa-solid fa-backward-step" [class.disabled]="!hasPrevious()"></i>
+          </button>
+          <button (click)="togglePlayPause()" class="icon-btn">
+            <i
+              class="fa-solid"
+              [ngClass]="{
+                'fa-pause': isPlaying,
+                'fa-play': !isPlaying
+              }"
+            ></i>
+          </button>
+          <button (click)="playNext()" [disabled]="!hasNext()" class="icon-btn">
+            <i class="fa-solid fa-forward-step" [class.disabled]="!hasNext()"></i>
+          </button>
+        </div>
+        <div class="player-progress">
+          <span class="time">{{ getSongDuration(currentSong, true) }}</span>
+          <input
+            type="range"
+            min="0"
+            [max]="audioPlayer?.duration || 0"
+            step="0.1"
+            [value]="audioPlayer?.currentTime || 0"
+            (input)="seekTo($event)"
+            class="progress-slider"
+          />
+          <span class="time">{{ getSongDuration(currentSong) }}</span>
+        </div>
+      </div>
 
-  <div class="player-controls">
-    <button (click)="stopSong()">
-      <i class="fa-solid fa-stop"></i>
-    </button>
-    <button (click)="togglePlayPause()">
-      <i
-        class="fa-solid"
-        [ngClass]="{
-          'fa-pause': isPlaying,
-          'fa-play': !isPlaying
-        }"
-      ></i>
-    </button>
-  </div>
-
-  <div class="progress-bar-wrapper">
-    <div class="progress-bar" [style.width.%]="progress"></div>
+      <!-- Right: Volume -->
+      <div class="player-right">
+        <div class="volume-control">
+          <i
+            class="fa-solid"
+            [ngClass]="{
+              'fa-volume-xmark': volume === 0,
+              'fa-volume-low': volume > 0 && volume <= 0.5,
+              'fa-volume-high': volume > 0.5
+            }"
+          ></i>
+          <input
+            type="range"
+            min="0"
+            max="1"
+            step="0.01"
+            [value]="volume"
+            (input)="setVolume($event)"
+          />
+        </div>
+      </div>
+    </div>
   </div>
 </div>

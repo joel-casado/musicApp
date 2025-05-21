@@ -1,0 +1,41 @@
+<div class="main-content buscar-content">
+    <button class="back-btn" (click)="goToDashboard()" title="Volver al dashboard">
+    <i class="fa-solid fa-arrow-left"></i> Volver al Dashboard
+    </button>
+  <h1>Buscar Playlists Públicas</h1>
+  <div class="search-section">
+    <input
+      type="text"
+      [(ngModel)]="searchQuery"
+      name="searchQuery"
+      placeholder="Busca una playlist pública..."
+      class="search-bar"
+    />
+  </div>
+  <section class="section">
+    <div class="grid">
+      <div
+        class="card playlist-card"
+        *ngFor="let p of filteredPlaylists"
+        (click)="goToPlaylist(p._id)"
+        style="cursor:pointer"
+      >
+        <div class="album-cover">
+          <img
+            *ngIf="p.image"
+            [src]="p.image"
+            [alt]="p.title"
+            style="width: 100%; height: 100%; object-fit: cover; border-radius: 4px;"
+          />
+        </div>
+        <div class="playlist-meta">
+          <p class="playlist-title">{{ p.title }}</p>
+          <p class="playlist-desc">{{ p.description }}</p>
+        </div>
+      </div>
+      <div *ngIf="filteredPlaylists.length === 0" class="card empty-card">
+        No hay playlists públicas que coincidan.
+      </div>
+    </div>
+  </section>
+</div>

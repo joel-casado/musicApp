@@ -2,9 +2,8 @@
     display: block;
     background-color: #121212;
     color: white;
-    height: 100vh;
-    overflow: hidden;
     font-family: 'Manrope', 'Helvetica Neue', Helvetica, sans-serif;
+    /* Remove height and overflow here */
   }
 
   .dashboard {
@@ -41,56 +40,155 @@
     color: #fff;
   }
 
-  .playlist-title {
-    font-size: 0.75rem;
-    font-weight: bold;
-    color: #b3b3b3;
-    margin: 1rem 0 0.5rem;
+  .biblioteca-content {
+    padding: 2rem;
+    background: #121212;
+    color: white;
+    min-height: 100vh;
+    height: auto;
+    overflow-y: auto;
+    padding-bottom: 40px;
+    position: relative;
   }
 
-  .main-content {
-    flex-grow: 1;
-    padding: 2rem;
-    overflow-y: auto;
+  .back-btn {
+    position: absolute;
+    top: 24px;
+    right: 32px;
+    background: none;
+    border: none;
+    color: #b3b3b3;
+    font-size: 1.1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: color 0.2s;
+    z-index: 10;
+  }
+  .back-btn:hover {
+    color: #1db954;
   }
 
   .section {
-    margin-bottom: 2rem;
+    margin-bottom: 2.5rem;
   }
 
   .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-    gap: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 24px;
+    max-width: 880px; /* 5 columns * 160px + 4*24px gap = 880px */
+    justify-content: flex-start;
+  }
+
+  @media (min-width: 900px) {
+    .grid {
+      grid-template-columns: repeat(5, 1fr);
+    }
   }
 
   .card {
-    background-color: #181818;
-    padding: 1rem;
-    border-radius: 8px;
+    background: #181818;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+    padding: 14px 14px 10px 14px;
+    min-width: 140px;
+    max-width: 170px;
+    flex: 1 1 140px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: background 0.2s, transform 0.2s;
     cursor: pointer;
-    transition: background 0.2s;
   }
-  .card p {
-    margin: 0;
-    margin-top: 0.5rem;
-    font-size: 0.9rem;
-    color: #fff;
-    text-align: center;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-
   .card:hover {
-    background-color: #282828;
+    background: #232323;
+    transform: translateY(-4px) scale(1.03);
   }
 
   .album-cover {
     width: 100%;
     height: 140px;
     background-color: #333;
-    border-radius: 4px;
-    margin-bottom: 0.5rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .playlist-meta, .song-meta {
+    width: 100%;
+    text-align: center;
+  }
+
+  .playlist-title {
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: #fff;
+    margin-bottom: 0.3rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .playlist-desc {
+    color: #b3b3b3;
+    font-size: 0.95rem;
+    margin-bottom: 0.2rem;
+    min-height: 32px;
+    max-height: 32px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .song-title {
+    font-weight: 500;
+    color: #fff;
+    margin-bottom: 0.2rem;
+    font-size: 1rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .song-artist {
+    color: #b3b3b3;
+    font-size: 0.95rem;
+    margin-bottom: 0.2rem;
+  }
+
+  .empty-card {
+    color: #b3b3b3;
+    background: #181818;
+    text-align: center;
+    min-width: 220px;
+    border: 1px dashed #333;
+    box-shadow: none;
+    cursor: default;
+  }
+
+  .search-section {
+    margin-bottom: 1.5rem;
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+  }
+  .search-bar {
+    width: 350px;
+    padding: 10px 16px;
+    background-color: #282828;
+    color: #fff;
+    border: 1px solid #333;
+    border-radius: 999px;
+    font-size: 1rem;
+    outline: none;
+    transition: border 0.2s;
+    margin-left: 0; /* Remove any centering margin */
+  }
+  .search-bar:focus {
+    border-color: #1db954;
   }

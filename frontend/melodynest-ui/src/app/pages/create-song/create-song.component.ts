@@ -103,4 +103,7 @@ export class CreateSongComponent {
       }
     });
   }
+  goToDashboard() {
+  this.router.navigate(['/dashboard']);
+  }
 }
